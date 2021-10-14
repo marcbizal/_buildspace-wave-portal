@@ -1,5 +1,9 @@
+import { config } from "dotenv";
 import { task } from "hardhat/config";
+import type { HardhatUserConfig } from "hardhat/types";
 import "@nomiclabs/hardhat-waffle";
+
+config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -16,4 +20,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 export default {
   solidity: "0.8.4",
-};
+  networks: {
+    rinkby: {
+      url: process.env.RINKBY_URL,
+      accounts: [process.env.RINKBY_ACCOUNT_KEY],
+    },
+  },
+} as HardhatUserConfig;
