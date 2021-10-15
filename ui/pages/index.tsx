@@ -1,9 +1,20 @@
-import { useCallback } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useWeb3React } from "@web3-react/core";
+import { injectedConnector } from "../helpers/connector";
+import { Button } from "../components/button";
 
 const Home: NextPage = () => {
-  const handleWave = useCallback(() => {}, []);
+  const { active, activate } = useWeb3React();
+
+  const handleWave = async () => {};
+  const handleConnect = async () => {
+    try {
+      await activate(injectedConnector);
+    } catch (error) {
+      console.error("There was an error connecting your wallet:", error);
+    }
+  };
 
   return (
     <div className="container mx-auto">
@@ -25,12 +36,10 @@ const Home: NextPage = () => {
         <p className="text-md text-gray-500 mb-4">
           Connect your Ethereum wallet and wave at me!
         </p>
-        <button
-          className="px-4 py-2 rounded bg-gray-100 text-gray-500 hover:bg-indigo-700 hover:text-white"
-          onClick={handleWave}
-        >
-          Wave at me
-        </button>
+        <div className="space-x-2">
+          <Button onClick={handleWave}>Wave at me</Button>
+          {!active && <Button onClick={handleConnect}>Connect wallet</Button>}
+        </div>
       </main>
     </div>
   );
